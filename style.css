@@ -12,6 +12,7 @@ html{
 
 body{
   font-family: 'Poppins', sans-serif;
+  background: linear-gradient(to right, #e9ecef, #9ac9e8);
 }
 
 /* ----------------------MAIN CONTAINER */

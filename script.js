@@ -19,7 +19,6 @@ document.querySelectorAll('.btn').forEach(btn => {
 
 // ----------------RESULT-CONTAINER
 
-// filepath: c:\Users\AYUSH\Desktop\my projects\calculator\script.js
 let resultDigits = document.querySelector('.result-digits');
 let blinkingCursor = document.querySelector('.blinking-cursor');
 let buttons = document.querySelectorAll('.btn');
