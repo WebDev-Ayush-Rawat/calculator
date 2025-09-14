@@ -1,5 +1,9 @@
 // ----------------RIPPLE EFFECT//
 
+rippleEffect();
+
+function rippleEffect(){
+
 document.querySelectorAll('.btn').forEach(btn => {
 
   btn.addEventListener('click',(e) =>{
@@ -15,6 +19,7 @@ document.querySelectorAll('.btn').forEach(btn => {
     ripple.addEventListener('animationend', () => ripple.remove());
   });
 });
+}
 
 
 // ----------------RESULT-CONTAINER
@@ -24,44 +29,75 @@ let blinkingCursor = document.querySelector('.blinking-cursor');
 let buttons = document.querySelectorAll('.btn');
 let expression = "";
 
-buttons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const value = btn.dataset.value ? btn.dataset.value : btn.textContent.trim();
-
-    if (value === 'AC') {
+function calculateResult(value){
+if (value === 'AC') {
       expression = "";
       resultDigits.textContent = "";
       resultDigits.classList.remove('blink');
       blinkingCursor.style.display = "inline-block";
-    } else if (value.toUpperCase() === 'DEL') {
+    } else if (value=== 'Del') {
       expression = expression.slice(0, -1); 
       resultDigits.textContent = expression;
       resultDigits.classList.remove('blink');
       blinkingCursor.style.display = "inline-block";
-    } else if (value === '=') {
-      try {
-        const result = eval(expression);
-        resultDigits.textContent = result;
-        expression = result.toString(); 
-        resultDigits.classList.add('blink');
-        blinkingCursor.style.display = "none";
-        setTimeout(() => {
+    } else if(value === '=') {
+        try {
+          let result = eval(expression);
+        
+          if (typeof result === "number" && !Number.isInteger(result)) {
+            result = parseFloat(result.toFixed(10)); 
+          }
+          resultDigits.textContent = result;
+          expression = result.toString(); 
+          resultDigits.classList.add('blink');
+          blinkingCursor.style.display = "none";
+          setTimeout(() => {
+            resultDigits.classList.remove('blink');
+          }, 1200);
+        } catch {
+          resultDigits.textContent = "Error";
+          expression = "";
           resultDigits.classList.remove('blink');
-        }, 1200);
-      } catch {
-        resultDigits.textContent = "Error";
-        expression = "";
-        resultDigits.classList.remove('blink');
-        blinkingCursor.style.display = "inline-block";
-      }
-    } else {
+          blinkingCursor.style.display = "inline-block";
+        }
+      } else {
       expression += value;
       resultDigits.textContent = expression;
       resultDigits.classList.remove('blink');
       blinkingCursor.style.display = "inline-block";
     }
+}
+
+buttons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const value = btn.dataset.value ? btn.dataset.value : btn.textContent.trim();
+    calculateResult(value);
   });
 });
+
+
+document.addEventListener('keydown', (event) =>{
+  const key = event.key;
+  const validKeys = ['0','1','2','3','4','5','6','7','8','9','+','-','*','/','.','Enter','Backspace','Delete','Escape'];
+  console.log(key);
+  if (validKeys.includes(key)){
+    event.preventDefault(); 
+    if (key === 'Enter') {
+      calculateResult('=');
+    } 
+    else if (key === 'Backspace') {
+      calculateResult('Del');
+    }
+    else if(key === 'Escape'){
+      calculateResult('AC');
+    }
+    else {
+      calculateResult(key);
+    }
+  } 
+})
+
+
 
 
 
